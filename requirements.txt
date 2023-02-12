@@ -1,0 +1,11 @@
+torch
+torchvision
+sentence-transformers
+transformers
+tokenizers
+streamlit
+streamlit_chat
+scipy
+ftfy
+bs4
+requests

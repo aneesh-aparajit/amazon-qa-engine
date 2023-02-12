@@ -1,0 +1,6 @@
+.ipynb_checkpoints
+*.csv
+.mypy_cache
+__pycache__
+env3.10/
+qa/
