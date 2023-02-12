@@ -11,7 +11,7 @@ HEADERS = {
 def get_response(url: str) -> BeautifulSoup:
     '''A function to return a BeautifulSoup object
     '''
-    res = requests.get(product_url, headers=HEADERS)
+    res = requests.get(url, headers=HEADERS)
     return BeautifulSoup(res.content, 'html.parser')
 
 

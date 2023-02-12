@@ -9,13 +9,13 @@ encoder = SentenceTransformer('sentence-transformers/multi-qa-mpnet-base-cos-v1'
 
 def get_most_similar_content(df: pd.DataFrame, query: str, top_k: int = 3) -> Dict[str, List[Any]]:
     query_emb = encoder.encode(query)
-    doc_emb = encoder.encode(df['keys'].values.to_list())
+    doc_emb = encoder.encode(df['keys'].values)
 
     scores = util.dot_score(query_emb, doc_emb)[0].cpu().tolist()
 
-    doc_scores = list(zip(scores, list(enumerate(df['keys'].values.to_list()))))
+    doc_scores = list(zip(scores, list(enumerate(df['keys'].values))))
 
-    doc_scores = sorted(doc_scores, lambda x: x[0], reverse=True)
+    doc_scores = sorted(doc_scores, key=lambda x: x[0], reverse=True)
 
     results = doc_scores[:top_k]
 
