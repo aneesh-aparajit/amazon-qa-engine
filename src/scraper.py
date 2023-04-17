@@ -12,6 +12,7 @@ def get_response(url: str) -> BeautifulSoup:
     '''A function to return a BeautifulSoup object
     '''
     res = requests.get(url, headers=HEADERS)
+    print(res.status_code)
     return BeautifulSoup(res.content, 'html.parser')
 
 
@@ -23,17 +24,20 @@ def collect_data(soup: BeautifulSoup) -> pd.DataFrame():
     eles = soup.select('#feature-bullets li span')
     info = [ele.text.strip() for ele in eles]
 
-    keys_raw = soup.select('#prodDetails > div > div:nth-child(1) > div:nth-child(1) > div')[0].select('th')
-    keys = [key.text.strip() for key in keys_raw]
+    try:
+        keys_raw = soup.select('#prodDetails > div > div:nth-child(1) > div:nth-child(1) > div')[0].select('th')
+        keys = [key.text.strip() for key in keys_raw]
 
-    values_raw = soup.select('#prodDetails > div > div:nth-child(1) > div:nth-child(1) > div')[0].select('td')
-    values = [values.text.strip() for values in values_raw]
+        values_raw = soup.select('#prodDetails > div > div:nth-child(1) > div:nth-child(1) > div')[0].select('td')
+        values = [values.text.strip() for values in values_raw]
 
-    other_keys = [x.text.strip() for x in soup.select('#productDetails_db_sections')[0].select('th')]
-    other_values = [x.text.strip() for x in soup.select('#productDetails_db_sections')[0].select('td')]
+        other_keys = [x.text.strip() for x in soup.select('#productDetails_db_sections')[0].select('th')]
+        other_values = [x.text.strip() for x in soup.select('#productDetails_db_sections')[0].select('td')]
 
-    keys.extend(other_keys)
-    values.extend(other_values)
+        keys.extend(other_keys)
+        values.extend(other_values)
+    except:
+        pass
 
     # Current Price
     price = soup.select('#corePriceDisplay_desktop_feature_div > div.a-section.a-spacing-none.aok-align-center > span.a-price.aok-align-center.reinventPricePriceToPayMargin.priceToPay > span:nth-child(2) > span.a-price-whole')[0].text

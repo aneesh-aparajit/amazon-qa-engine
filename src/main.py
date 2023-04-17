@@ -14,16 +14,11 @@ with st.form("form"):
     submit = st.form_submit_button(label="Lessgo!!!")
 
     if submit:
-        progress_text = "Operation in progress. Please wait."
-        my_bar = st.progress(0, text=progress_text)
-
-        for percent_complete in range(100):
+        with st.spinner('Collecting data...'):
             df_reviews = collect_reviews(url)
+            print(df_reviews.shape)
             df_data = collect_data(get_response(url))
             df = pd.concat([df_data, df_reviews])
-            my_bar.progress(percent_complete + 1, text=progress_text)
-
-        print(df.shape)
 
 
 if df is not None:
